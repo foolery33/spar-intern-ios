@@ -46,6 +46,7 @@ struct GoodListCardView: View {
 					goodModel.image
 						.resizable()
 						.aspectRatio(contentMode: .fill)
+						.frame(width: 144, height: 144)
 					VStack(spacing: 0) {
 						HStack(spacing: 0) {
 							if let badgeType = goodModel.badgeType {
@@ -88,7 +89,7 @@ struct GoodListCardView: View {
 							}
 							AppColors.icons003
 								.frame(width: 1, height: 16)
-							Text("\(goodModel.reviewsNumber) отзывов")
+							Text(String(format: NSLocalizedString("reviews", comment: ""), goodModel.reviewsNumber))
 								.foregroundStyle(AppColors.icons003)
 								.font(AppFonts.System.regular12)
 						}
@@ -178,7 +179,7 @@ struct GoodListCardView: View {
 		oldPrice: "199,0",
 		rating: 4.1,
 		reviewsNumber: 20,
-		image: AppImages.goodImage1,
+		image: AppImages.goodImage11,
 		badgeType: .pricesHit,
 		discountPercent: 25
 	), goodListCartModel: .init(isInCart: false, measurementUnit: .item, amount: 0.1),delegate: nil)

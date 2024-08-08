@@ -15,11 +15,11 @@ enum GoodBadgeType {
 	var text: String {
 		switch self {
 		case .pricesHit:
-			"Удар по ценам"
+			NSLocalizedString("pricesHit", comment: "")
 		case .new:
-			"Новинки"
+			NSLocalizedString("new", comment: "")
 		case .cardPrice:
-			"Цена по карте"
+			NSLocalizedString("cardPrice", comment: "")
 		}
 	}
 

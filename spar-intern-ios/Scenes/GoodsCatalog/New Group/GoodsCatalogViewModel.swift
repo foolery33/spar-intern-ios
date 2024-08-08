@@ -95,7 +95,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 			quantityType: .kgItem,
 			oldPrice: "199,0",
 			rating: 4.1,
-			reviewsNumber: 20,
+			reviewsNumber: 1,
 			image: AppImages.goodImage1,
 			badgeType: .pricesHit,
 			discountPercent: 25
@@ -109,7 +109,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 			quantityType: .kg,
 			oldPrice: "199,0",
 			rating: 4.1,
-			reviewsNumber: 20,
+			reviewsNumber: 2,
 			image: AppImages.goodImage2,
 			badgeType: .new,
 			discountPercent: nil
@@ -123,7 +123,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 			quantityType: .item,
 			oldPrice: "199,0",
 			rating: 4.1,
-			reviewsNumber: 20,
+			reviewsNumber: 3,
 			image: AppImages.goodImage3,
 			badgeType: nil,
 			discountPercent: nil
@@ -137,7 +137,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 			quantityType: .item,
 			oldPrice: "199,0",
 			rating: 4.1,
-			reviewsNumber: 20,
+			reviewsNumber: 5,
 			image: AppImages.goodImage4,
 			badgeType: nil,
 			discountPercent: 25
@@ -151,7 +151,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 			quantityType: .kgItem,
 			oldPrice: "199,0",
 			rating: 4.1,
-			reviewsNumber: 20,
+			reviewsNumber: 22,
 			image: AppImages.goodImage5,
 			badgeType: nil,
 			discountPercent: nil

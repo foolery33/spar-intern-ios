@@ -5,11 +5,22 @@
 //  Created by Nikita Usov on 08.08.2024.
 //
 
+import Foundation
+
 enum MeasurementUnitType: String, CaseIterable, Identifiable {
-	case item = "Шт"
-	case kg = "Кг"
+	case item
+	case kg
 
 	var id: String { self.rawValue }
+
+	var rawValue: String {
+		switch self {
+		case .item:
+			NSLocalizedString("item", comment: "")
+		case .kg:
+			NSLocalizedString("kg", comment: "")
+		}
+	}
 
 	var defaultValue: Double {
 		switch self {
@@ -23,9 +34,9 @@ enum MeasurementUnitType: String, CaseIterable, Identifiable {
 	func formatAmountString(amount: Double) -> String {
 		switch self {
 		case .item:
-			String(Int(amount)) + " \(rawValue.lowercased())"
+			String(format: NSLocalizedString("itemAmount", comment: ""), Int(amount))
 		case .kg:
-			String(format: "%.1f", amount) + " \(self.rawValue.lowercased())"
+			String(format: NSLocalizedString("kgAmount", comment: ""), amount)
 		}
 	}
 }

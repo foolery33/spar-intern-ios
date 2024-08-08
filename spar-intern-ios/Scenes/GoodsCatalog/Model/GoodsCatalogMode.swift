@@ -27,13 +27,4 @@ enum GoodsCatalogMode {
 			0
 		}
 	}
-
-	var horizontalSpacing: CGFloat {
-		switch self {
-		case .grid:
-			16
-		case .list:
-			0
-		}
-	}
 }

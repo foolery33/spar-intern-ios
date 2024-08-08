@@ -8,9 +8,10 @@
 import UIKit
 
 protocol Coordinator: AnyObject {
-	init(navigationController: UINavigationController)
+	init(navigationController: UINavigationController, appDependency: AppDependency)
 
 	var navigationController: UINavigationController { get }
+	var appDependency: AppDependency { get }
 	var childCoordinators: [Coordinator] { get set }
 	var onDidFinish: (() -> Void)? { get set }
 
@@ -31,7 +32,7 @@ extension Coordinator {
 
 	@discardableResult
 	func show<T: Coordinator>(_ type: T.Type, animated: Bool) -> T {
-		let coordinator = T(navigationController: navigationController)
+		let coordinator = T(navigationController: navigationController, appDependency: appDependency)
 		startCoordinator(coordinator, animated: animated)
 		return coordinator
 	}

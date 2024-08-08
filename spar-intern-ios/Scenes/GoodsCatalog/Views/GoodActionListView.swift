@@ -12,6 +12,7 @@ struct GoodActionListView: View {
 
 	@Binding var isOrdered: Bool
 	@Binding var isFavourite: Bool
+	var iconsUnselectedColor: Color = AppColors.text004
 
 	// MARK: - Body
 
@@ -23,10 +24,10 @@ struct GoodActionListView: View {
 				Group {
 					if isOrdered {
 						AppIcons.orderedUnfilled
-							.foregroundStyle(AppColors.text004)
+							.foregroundStyle(iconsUnselectedColor)
 					} else {
 						AppIcons.orderedUnfilled
-							.foregroundStyle(AppColors.text004)
+							.foregroundStyle(iconsUnselectedColor)
 					}
 				}
 				.padding(8)
@@ -40,7 +41,7 @@ struct GoodActionListView: View {
 							.foregroundStyle(AppColors.primary001)
 					} else {
 						AppIcons.favouriteUnfilled
-							.foregroundStyle(AppColors.text004)
+							.foregroundStyle(iconsUnselectedColor)
 					}
 				}
 				.padding(8)

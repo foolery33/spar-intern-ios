@@ -11,12 +11,14 @@ import UIKit
 final class AppCoordinator: Coordinator {
 	// MARK: - Init
 
-	init(navigationController: UINavigationController) {
+	init(navigationController: UINavigationController, appDependency: AppDependency = AppDependency()) {
 		self.navigationController = navigationController
+		self.appDependency = appDependency
 	}
 
 	// MARK: - Public
 
+	var appDependency: AppDependency
 	var childCoordinators: [Coordinator] = []
 	var onDidFinish: (() -> Void)?
 

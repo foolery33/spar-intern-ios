@@ -25,7 +25,9 @@ struct GoodsCatalogView: View {
 				VStack(spacing: catalogMode.verticalSpacing) {
 					BaseNavigationBar(leftView: {
 						Button(action: {
-							catalogMode = catalogMode == .grid ? .list : .grid
+							withAnimation {
+								catalogMode = catalogMode == .grid ? .list : .grid
+							}
 						}, label: {
 							RoundedRectangle(cornerRadius: 12)
 								.fill(AppColors.surfaces002)
@@ -33,36 +35,60 @@ struct GoodsCatalogView: View {
 								.overlay(catalogMode.image.tint(AppColors.primary001))
 						})
 					}, rightView: {}, text: "")
-					LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 8, content: {
-						ForEach(0..<16) { _ in
-							GoodGridCardView(goodModel: GoodModel(
-								id: UUID().uuidString,
-								name: "сыр Ламбер 500/0 230asdfasdfadsfasdf asdfas dfa asdf asdfas df asdf asf asdfasdfasdsг",
-								country: "Франция 🇫🇷",
-								priceInteger: 99,
-								priceCents: 90,
-								quantityType: .kgItem,
-								oldPrice: "199,0",
-								rating: 4.1,
-								reviewsNumber: 20,
-								image: AppImages.goodImage1,
-								badgeType: .pricesHit,
-								discountPercent: 25,
-								isFavourite: false,
-								isOrdered: false
-							))
+					if catalogMode == .grid {
+						LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 8, content: {
+							ForEach(0..<viewModel.goods.count, id: \.self) { index in
+								GoodGridCardView(
+									goodModel: viewModel.goods[index],
+									goodListCartModel: viewModel.getGoodListCartModel(from: viewModel.goods[index]),
+									delegate: self
+								)
+							}
+						})
+						.padding(.horizontal, 16)
+					} else {
+						LazyVStack {
+							ForEach(0..<viewModel.goods.count, id: \.self) { index in
+								GoodListCardView(
+									goodModel: viewModel.goods[index],
+									goodListCartModel: viewModel.getGoodListCartModel(from: viewModel.goods[index]),
+									delegate: self
+								)
+							}
 						}
-					})
-					.padding(.horizontal, 16)
+					}
 				}
 			}
 			.scrollIndicators(.hidden)
 		}
+		.onViewDidLoad {
+			viewModel.viewDidLoad()
+		}
     }
+}
+
+extension GoodsCatalogView: GoodsCartDelegate {
+	func addToCart(goodId: String, measurementUnit: MeasurementUnitType, amount: Double) {
+		viewModel.addToCart(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
+	}
+	
+	func updateCartItem(goodId: String, measurementUnit: MeasurementUnitType, amount: Double) {
+		viewModel.updateCartItem(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
+	}
+	
+	func deleteCartItem(goodId: String) {
+		viewModel.deleteCartItem(goodId: goodId)
+	}
+}
+
+protocol GoodsCartDelegate {
+	func addToCart(goodId: String, measurementUnit: MeasurementUnitType, amount: Double)
+	func updateCartItem(goodId: String, measurementUnit: MeasurementUnitType, amount: Double)
+	func deleteCartItem(goodId: String)
 }
 
 // MARK: - Preview
 
 #Preview {
-    GoodsCatalogView(viewModel: GoodsCatalogViewModel())
+    GoodsCatalogView(viewModel: GoodsCatalogViewModel(dependencies: AppDependency()))
 }

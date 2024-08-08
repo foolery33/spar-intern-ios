@@ -18,8 +18,6 @@ struct GoodModel {
 	let rating: Double
 	let reviewsNumber: Int
 	let image: Image
-	let badgeType: GoodBadgeType
+	let badgeType: GoodBadgeType?
 	let discountPercent: Int?
-	let isFavourite: Bool
-	let isOrdered: Bool
 }

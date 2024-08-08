@@ -8,16 +8,32 @@
 import SwiftUI
 
 struct GoodGridCardView: View {
+	// MARK: - Init
+
+	init(
+		goodModel: GoodModel,
+		goodListCartModel: GoodListCartModel,
+		delegate: GoodsCartDelegate?
+	) {
+		self.goodModel = goodModel
+		self.isInCart = goodListCartModel.isInCart
+		self.measurementUnit = goodListCartModel.measurementUnit
+		self.amount = goodListCartModel.amount
+		self.delegate = delegate
+	}
+
 	// MARK: - Public
 
 	let goodModel: GoodModel
+	let delegate: GoodsCartDelegate?
 
 	// MARK: - Private
 
 	@State private var isOrdered = false
 	@State private var isFavourite = false
-	@State private var isInCart = false
-	@State private var measurementUnit: MeasurementUnitType = .kg
+	@State private var isInCart: Bool
+	@State private var measurementUnit: MeasurementUnitType
+	@State private var amount: Double
 
 	// MARK: - Body
 
@@ -26,22 +42,24 @@ struct GoodGridCardView: View {
 			ZStack {
 				goodModel.image
 					.resizable()
-					.aspectRatio(contentMode: isInCart ? .fit : .fill)
+					.aspectRatio(contentMode: (isInCart && goodModel.quantityType.canBuySingleItem) ? .fit : .fill)
 					.frame(maxWidth: 168, maxHeight: 168)
 					.clipped()
 				VStack(spacing: 0) {
 					HStack(alignment: .top, spacing: 0) {
-						Text(goodModel.badgeType.text)
-							.foregroundStyle(AppColors.white)
-							.font(AppFonts.System.regular10)
-							.padding(.top, 2)
-							.padding(.bottom, 4)
-							.padding(.trailing, 6)
-							.padding(.leading, 12)
-							.background(
-								goodModel.badgeType.badgeBackgroundColor
-									.clipShape(.rect(cornerRadii: .init(bottomTrailing: 6, topTrailing: 6)))
-							)
+						if let badgeType = goodModel.badgeType {
+							Text(badgeType.text)
+								.foregroundStyle(AppColors.white)
+								.font(AppFonts.System.regular10)
+								.padding(.top, 2)
+								.padding(.bottom, 4)
+								.padding(.trailing, 6)
+								.padding(.leading, 12)
+								.background(
+									badgeType.badgeBackgroundColor
+										.clipShape(.rect(cornerRadii: .init(bottomTrailing: 6, topTrailing: 6)))
+								)
+						}
 						Spacer()
 						GoodActionListView(isOrdered: $isOrdered, isFavourite: $isFavourite)
 					}
@@ -111,7 +129,7 @@ struct GoodGridCardView: View {
 						.padding(.leading, 4)
 						Spacer()
 					}
-					CartButtonView(isPressed: $isInCart, measurementUnit: $measurementUnit)
+					CartButtonView(isPressed: $isInCart, goodId: goodModel.id, measurementUnit: $measurementUnit, amount: $amount, delegate: delegate)
 				}
 				.padding(4)
 			}
@@ -138,9 +156,7 @@ struct GoodGridCardView: View {
 		reviewsNumber: 20,
 		image: AppImages.goodImage1,
 		badgeType: .pricesHit,
-		discountPercent: 25,
-		isFavourite: false,
-		isOrdered: false
-	))
+		discountPercent: 25
+	), goodListCartModel: .init(isInCart: false, measurementUnit: .kg, amount: 0.1), delegate: nil)
 	.frame(width: 190)
 }

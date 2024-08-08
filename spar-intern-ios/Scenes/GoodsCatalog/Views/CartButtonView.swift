@@ -8,22 +8,14 @@
 import SwiftUI
 
 struct CartButtonView: View {
-	// MARK: - Init
-
-	init(isPressed: Binding<Bool>, measurementUnit: Binding<MeasurementUnitType>) {
-		self._isPressed = isPressed
-		self._measurementUnit = measurementUnit
-		self.amount = measurementUnit.wrappedValue.defaultValue
-	}
-
 	// MARK: - Public
 
 	@Binding var isPressed: Bool
+	var goodId: String
 	@Binding var measurementUnit: MeasurementUnitType
+	@Binding var amount: Double
 
-	// MARK: - Private
-
-	@State private var amount: Double
+	var delegate: GoodsCartDelegate?
 
 	// MARK: - Body
 
@@ -33,8 +25,9 @@ struct CartButtonView: View {
 				Spacer().frame(width: 6)
 				Button(action: {
 					withAnimation(.easeInOut(duration: 0.5)) {
-						isPressed.toggle()
+						isPressed = true
 						amount = measurementUnit.defaultValue
+						delegate?.addToCart(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
 					}
 				}) {
 					AppIcons.cart
@@ -45,10 +38,12 @@ struct CartButtonView: View {
 			} else {
 				Button(action: {
 					amount = max(0, amount - measurementUnit.defaultValue)
+					delegate?.updateCartItem(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
 					if -0.01 < abs(amount), abs(amount) < 0.01 {
 						withAnimation(.easeInOut(duration: 0.5)) {
 							isPressed = false
 						}
+						delegate?.deleteCartItem(goodId: goodId)
 					}
 				}) {
 					AppIcons.minus
@@ -68,6 +63,7 @@ struct CartButtonView: View {
 				Spacer()
 				Button(action: {
 					amount += measurementUnit.defaultValue
+					delegate?.updateCartItem(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
 				}) {
 					AppIcons.plus
 						.foregroundStyle(AppColors.white)
@@ -79,6 +75,7 @@ struct CartButtonView: View {
 		.onChange(of: measurementUnit) { _, newValue in
 			withAnimation {
 				amount = newValue.defaultValue
+				delegate?.updateCartItem(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
 			}
 		}
     }
@@ -89,5 +86,6 @@ struct CartButtonView: View {
 #Preview {
 	@State var isPressed = true
 	@State var measurementUnit: MeasurementUnitType = .item
-	return CartButtonView(isPressed: $isPressed, measurementUnit: $measurementUnit)
+	@State var amount: Double = 1
+	return CartButtonView(isPressed: $isPressed, goodId: "", measurementUnit: $measurementUnit, amount: $amount)
 }

@@ -11,12 +11,8 @@ final class CartStoreService {
 	// MARK: - Init
 
 	init() {
-		persistentContainer = NSPersistentContainer(name: "spar_intern_ios") // Убедитесь, что имя совпадает с вашим файлом xcdatamodeld
-		persistentContainer.loadPersistentStores { _, error in
-			if let error = error {
-				print(error.localizedDescription)
-			}
-		}
+		persistentContainer = NSPersistentContainer(name: "spar_intern_ios")
+		persistentContainer.loadPersistentStores { _, _ in }
 	}
 
 	// MARK: - Private
@@ -74,7 +70,7 @@ extension CartStoreService: CartStoreServiceProtocol {
 				throw CartStoreServiceError.cartItemNotFound
 			}
 		} catch {
-			print("Error updating cart item: \(error)")
+			throw CartStoreServiceError.operationFail
 		}
 	}
 

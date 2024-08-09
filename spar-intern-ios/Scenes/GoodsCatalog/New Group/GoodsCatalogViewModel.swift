@@ -8,7 +8,7 @@
 import Foundation
 
 final class GoodsCatalogViewModel: ObservableObject {
-	typealias Dependencies = HasCartStoreService
+	typealias Dependencies = HasCartStoreService & HasFavouriteGoodsService
 
 	// MARK: - Init
 
@@ -18,26 +18,23 @@ final class GoodsCatalogViewModel: ObservableObject {
 
 	// MARK: - Public
 
+	@Published var isAlertShowing: Bool = false
 	@Published private(set) var goods: [GoodModel] = []
-	@Published private(set) var message: String = ""
-	@Published private(set) var isAlertShowing: Bool = false
-	@Published private(set) var cartItems: [CartItem] = []
+
+	private(set) var cartItems: [CartItem] = []
+	@Published private(set) var favouriteGoods: [String] = []
+	private(set) var alertTitle: String = ""
+	private(set) var message: String = ""
 
 	func viewDidLoad() {
 		populateGoods()
 		fetchCartItems()
+		fetchFavouriteGoods()
 	}
 
 	func addToCart(goodId: String, measurementUnit: MeasurementUnitType, amount: Double) {
 		do {
 			try dependencies.cartStoreService.addToCart(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
-		} catch {
-			handleError(error)
-		}
-	}
-
-	func fetchCartItems() {
-		do {
 			cartItems = try dependencies.cartStoreService.fetchCartItems()
 		} catch {
 			handleError(error)
@@ -47,6 +44,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 	func updateCartItem(goodId: String, measurementUnit: MeasurementUnitType, amount: Double) {
 		do {
 			try dependencies.cartStoreService.updateCartItem(goodId: goodId, measurementUnit: measurementUnit, amount: amount)
+			cartItems = try dependencies.cartStoreService.fetchCartItems()
 		} catch {
 			handleError(error)
 		}
@@ -55,6 +53,7 @@ final class GoodsCatalogViewModel: ObservableObject {
 	func deleteCartItem(goodId: String) {
 		do {
 			try dependencies.cartStoreService.deleteCartItem(goodId: goodId)
+			cartItems = try dependencies.cartStoreService.fetchCartItems()
 		} catch {
 			handleError(error)
 		}
@@ -76,13 +75,40 @@ final class GoodsCatalogViewModel: ObservableObject {
 		}
 	}
 
+	func isInFavourites(goodId: String) -> Bool {
+		favouriteGoods.contains(goodId)
+	}
+
+	func addToFavourites(goodId: String) {
+		dependencies.favouriteGoodsService.addToFavourites(goodId: goodId)
+		favouriteGoods = dependencies.favouriteGoodsService.favouriteGoods
+	}
+
+	func deleteFromFavourites(goodId: String) {
+		dependencies.favouriteGoodsService.deleteFromFavourites(goodId: goodId)
+		favouriteGoods = dependencies.favouriteGoodsService.favouriteGoods
+	}
+
 	// MARK: - Private
 
 	private let dependencies: Dependencies
 
 	private func handleError(_ error: Error) {
 		isAlertShowing = true
+		alertTitle = NSLocalizedString("error", comment: "")
 		message = error.localizedDescription
+	}
+
+	private func fetchCartItems() {
+		do {
+			cartItems = try dependencies.cartStoreService.fetchCartItems()
+		} catch {
+			handleError(error)
+		}
+	}
+
+	private func fetchFavouriteGoods() {
+		favouriteGoods = dependencies.favouriteGoodsService.favouriteGoods
 	}
 
 	private func populateGoods() {

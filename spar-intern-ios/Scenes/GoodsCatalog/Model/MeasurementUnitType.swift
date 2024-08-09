@@ -8,12 +8,12 @@
 import Foundation
 
 enum MeasurementUnitType: String, CaseIterable, Identifiable {
-	case item
-	case kg
+	case item = "item"
+	case kg = "kg"
 
 	var id: String { self.rawValue }
 
-	var rawValue: String {
+	var appValue: String {
 		switch self {
 		case .item:
 			NSLocalizedString("item", comment: "")

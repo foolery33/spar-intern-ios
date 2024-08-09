@@ -30,6 +30,57 @@
         }
       }
     },
+    "cartItemNotFound" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cart item was not found"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Позиция в корзине не была найдена"
+          }
+        }
+      }
+    },
+    "contextSaveFail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to save local database context"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неудача при сохранении контекста локальной базы данных"
+          }
+        }
+      }
+    },
+    "error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка"
+          }
+        }
+      }
+    },
     "item" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -56,13 +107,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Item"
+                  "value" : "%d item"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Items"
+                  "value" : "%d items"
                 }
               }
             }
@@ -74,25 +125,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Шт"
+                  "value" : "%d шт"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Шт"
+                  "value" : "%d шт"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Шт"
+                  "value" : "%d шт"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Шт"
+                  "value" : "%d шт"
                 }
               }
             }
@@ -126,13 +177,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%.1f Kg"
+                  "value" : "%.1f kg"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%.1f Kgs"
+                  "value" : "%.1f kgs"
                 }
               }
             }
@@ -143,26 +194,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%.1f Кг"
+                  "state" : "needs_review",
+                  "value" : "%.1f кг"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%.1f Кг"
+                  "state" : "needs_review",
+                  "value" : "%.1f кг"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%.1f Кг"
+                  "state" : "needs_review",
+                  "value" : "%.1f кг"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%.1f Кг"
+                  "state" : "needs_review",
+                  "value" : "%.1f кг"
                 }
               }
             }
@@ -183,6 +234,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Новинки"
+          }
+        }
+      }
+    },
+    "operationFail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database operation was failed"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неудача при выполнении операции с базой данных"
+          }
+        }
+      }
+    },
+    "persistentStoresLoadFail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load local data"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неудача при загрузке локальных данных"
           }
         }
       }
@@ -258,6 +343,9 @@
       }
     },
     "s" : {
+
+    },
+    "ОК" : {
 
     }
   },

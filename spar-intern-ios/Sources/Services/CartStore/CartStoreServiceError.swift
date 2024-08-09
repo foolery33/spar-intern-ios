@@ -16,13 +16,13 @@ enum CartStoreServiceError: LocalizedError {
 	var errorDescription: String? {
 		switch self {
 		case .persistentStoresLoadFail:
-			""
+			NSLocalizedString("persistentStoresLoadFail", comment: "")
 		case .operationFail:
-			""
+			NSLocalizedString("operationFail", comment: "")
 		case .cartItemNotFound:
-			""
+			NSLocalizedString("cartItemNotFound", comment: "")
 		case .contextSaveFail:
-			""
+			NSLocalizedString("contextSaveFail", comment: "")
 		}
 	}
 }

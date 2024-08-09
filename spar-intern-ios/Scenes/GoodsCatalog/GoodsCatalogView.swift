@@ -38,21 +38,27 @@ struct GoodsCatalogView: View {
 					if catalogMode == .grid {
 						LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 8, content: {
 							ForEach(0..<viewModel.goods.count, id: \.self) { index in
-								GoodGridCardView(
+								GoodCardView(
+									mode: .grid,
 									goodModel: viewModel.goods[index],
 									goodListCartModel: viewModel.getGoodListCartModel(from: viewModel.goods[index]),
-									delegate: self
+									cartDelegate: self,
+									favouriteGoodsDelegate: self,
+									isFavourite: viewModel.isInFavourites(goodId: viewModel.goods[index].id)
 								)
 							}
 						})
 						.padding(.horizontal, 16)
 					} else {
-						LazyVStack {
+						LazyVStack(spacing: 0) {
 							ForEach(0..<viewModel.goods.count, id: \.self) { index in
-								GoodListCardView(
+								GoodCardView(
+									mode: .list,
 									goodModel: viewModel.goods[index],
 									goodListCartModel: viewModel.getGoodListCartModel(from: viewModel.goods[index]),
-									delegate: self
+									cartDelegate: self,
+									favouriteGoodsDelegate: self,
+									isFavourite: viewModel.isInFavourites(goodId: viewModel.goods[index].id)
 								)
 							}
 						}
@@ -64,8 +70,20 @@ struct GoodsCatalogView: View {
 		.onViewDidLoad {
 			viewModel.viewDidLoad()
 		}
+		.alert(
+			viewModel.alertTitle,
+			isPresented: $viewModel.isAlertShowing,
+			actions: {
+				Button("ОК", action: {})
+			},
+			message: {
+				Text(viewModel.message)
+			}
+		)
     }
 }
+
+// MARK: - GoodsCartDelegate
 
 extension GoodsCatalogView: GoodsCartDelegate {
 	func addToCart(goodId: String, measurementUnit: MeasurementUnitType, amount: Double) {
@@ -81,10 +99,16 @@ extension GoodsCatalogView: GoodsCartDelegate {
 	}
 }
 
-protocol GoodsCartDelegate {
-	func addToCart(goodId: String, measurementUnit: MeasurementUnitType, amount: Double)
-	func updateCartItem(goodId: String, measurementUnit: MeasurementUnitType, amount: Double)
-	func deleteCartItem(goodId: String)
+// MARK: - FavouriteGoodsDelegate
+
+extension GoodsCatalogView: FavouriteGoodsDelegate {
+	func addToFavourites(goodId: String) {
+		viewModel.addToFavourites(goodId: goodId)
+	}
+	
+	func deleteFromFavourites(goodId: String) {
+		viewModel.deleteFromFavourites(goodId: goodId)
+	}
 }
 
 // MARK: - Preview

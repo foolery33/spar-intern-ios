@@ -10,9 +10,11 @@ import SwiftUI
 struct GoodActionListView: View {
 	// MARK: - Public
 
+	var goodId: String
 	@Binding var isOrdered: Bool
 	@Binding var isFavourite: Bool
 	var iconsUnselectedColor: Color = AppColors.text004
+	var delegate: FavouriteGoodsDelegate?
 
 	// MARK: - Body
 
@@ -34,6 +36,11 @@ struct GoodActionListView: View {
 			})
 			Button(action: {
 				isFavourite.toggle()
+				if isFavourite {
+					delegate?.addToFavourites(goodId: goodId)
+				} else {
+					delegate?.deleteFromFavourites(goodId: goodId)
+				}
 			}, label: {
 				Group {
 					if isFavourite {
@@ -55,5 +62,5 @@ struct GoodActionListView: View {
 // MARK: - Preview
 
 #Preview {
-	GoodActionListView(isOrdered: .constant(false), isFavourite: .constant(true))
+	GoodActionListView(goodId: "", isOrdered: .constant(false), isFavourite: .constant(true))
 }

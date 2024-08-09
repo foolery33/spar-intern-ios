@@ -13,24 +13,31 @@ struct GoodListCardView: View {
 	init(
 		goodModel: GoodModel,
 		goodListCartModel: GoodListCartModel,
-		delegate: GoodsCartDelegate?
+		delegate: GoodsCartDelegate?,
+		favouriteGoodsDelegate: FavouriteGoodsDelegate?,
+		isOrdered: Binding<Bool>,
+		isFavourite: Binding<Bool>
 	) {
 		self.goodModel = goodModel
 		self.isInCart = goodListCartModel.isInCart
 		self.measurementUnit = goodListCartModel.measurementUnit
 		self.amount = goodListCartModel.amount
-		self.delegate = delegate
+		self.cartDelegate = delegate
+		self.favouriteGoodsDelegate = favouriteGoodsDelegate
+		self._isOrdered = isOrdered
+		self._isFavourite = isFavourite
 	}
 
 	// MARK: - Public
 
 	let goodModel: GoodModel
-	let delegate: GoodsCartDelegate?
+	let cartDelegate: GoodsCartDelegate?
+	let favouriteGoodsDelegate: FavouriteGoodsDelegate?
+	@Binding var isOrdered: Bool
+	@Binding var isFavourite: Bool
 
 	// MARK: - Private
 
-	@State private var isOrdered = false
-	@State private var isFavourite = false
 	@State private var isInCart: Bool
 	@State private var measurementUnit: MeasurementUnitType
 	@State private var amount: Double
@@ -114,7 +121,7 @@ struct GoodListCardView: View {
 						if isInCart, goodModel.quantityType.canBuySingleItem {
 							Picker("", selection: $measurementUnit) {
 								ForEach(MeasurementUnitType.allCases) { unit in
-									Text(unit.rawValue)
+									Text(unit.appValue)
 										.foregroundStyle(AppColors.icons003)
 										.font(AppFonts.System.regular14)
 										.tag(unit)
@@ -146,22 +153,17 @@ struct GoodListCardView: View {
 								.padding(.leading, 4)
 								Spacer()
 							}
-							CartButtonView(isPressed: $isInCart, goodId: goodModel.id, measurementUnit: $measurementUnit, amount: $amount, delegate: delegate)
+							CartButtonView(isPressed: $isInCart, goodId: goodModel.id, measurementUnit: $measurementUnit, amount: $amount, delegate: cartDelegate)
 						}
 						.padding(4)
 					}
-					GoodActionListView(isOrdered: $isOrdered, isFavourite: $isFavourite, iconsUnselectedColor: AppColors.icons004)
+					GoodActionListView(goodId: goodModel.id, isOrdered: $isOrdered, isFavourite: $isFavourite, iconsUnselectedColor: AppColors.icons004, delegate: favouriteGoodsDelegate)
 				}
 			}
 			.padding([.vertical, .leading], 16)
 			.padding(.trailing, 8)
 			.frame(height: 144 + 32)
 			.background(AppColors.white)
-			.onChange(of: isInCart) { oldValue, newValue in
-				if newValue {
-
-				}
-			}
 		}
     }
 }
@@ -182,5 +184,5 @@ struct GoodListCardView: View {
 		image: AppImages.goodImage11,
 		badgeType: .pricesHit,
 		discountPercent: 25
-	), goodListCartModel: .init(isInCart: false, measurementUnit: .item, amount: 0.1),delegate: nil)
+	), goodListCartModel: .init(isInCart: false, measurementUnit: .item, amount: 0.1), delegate: nil, favouriteGoodsDelegate: nil, isOrdered: .constant(false), isFavourite: .constant(true))
 }
